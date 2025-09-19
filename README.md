@@ -37,7 +37,7 @@
 
 ## 🎯 Sobre o Projeto
 
-**Wandering Chameleon Zoom** é uma aplicação web moderna desenvolvida com React 18, TypeScript e Vite. O projeto utiliza um design system robusto baseado em Shadcn/ui e Tailwind CSS, oferecendo uma experiência de usuário fluida e responsiva.
+**Blog guia do código** é uma aplicação web moderna desenvolvida com React 18, TypeScript e Vite. O projeto utiliza um design system robusto baseado em Shadcn/ui e Tailwind CSS, oferecendo uma experiência de usuário fluida e responsiva.
 
 ### Características Principais
 
@@ -140,7 +140,7 @@
 
    ```bash
    git clone <repository-url>
-   cd wandering-chameleon-zoom
+   cd Blog guia do código
    ```
 
 2. **Instale as dependências**
@@ -221,7 +221,7 @@ pnpm build:dev
 ## 📁 Estrutura de Pastas
 
 ```
-wandering-chameleon-zoom/
+Blog guia do código/
 ├── public/                 # Arquivos estáticos
 │   ├── placeholder.svg    # Imagens e assets
 │   └── robots.txt         # SEO
