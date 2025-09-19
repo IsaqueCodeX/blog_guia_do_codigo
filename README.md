@@ -140,7 +140,7 @@
 
    ```bash
    git clone <repository-url>
-   cd Blog guia do código
+   cd blog_guia_do_codigo
    ```
 
 2. **Instale as dependências**
