@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, ReactNode } from 'react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface GlowCardProps {
   children: ReactNode;
@@ -35,8 +36,12 @@ const GlowCard: React.FC<GlowCardProps> = ({
 }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
+    // Não aplicar efeito RGB em dispositivos móveis
+    if (isMobile) return;
+    
     const syncPointer = (e: PointerEvent) => {
       const { clientX: x, clientY: y } = e;
       
@@ -50,7 +55,7 @@ const GlowCard: React.FC<GlowCardProps> = ({
 
     document.addEventListener('pointermove', syncPointer);
     return () => document.removeEventListener('pointermove', syncPointer);
-  }, []);
+  }, [isMobile]);
 
   const { base, spread } = glowColorMap[glowColor];
 
@@ -63,6 +68,28 @@ const GlowCard: React.FC<GlowCardProps> = ({
   };
 
   const getInlineStyles = () => {
+    // Versão simplificada para mobile (sem efeitos RGB)
+    if (isMobile) {
+      const mobileStyles: React.CSSProperties = {
+        backgroundColor: 'hsl(0 0% 60% / 0.12)',
+        border: '2px solid hsl(0 0% 60% / 0.12)',
+        borderRadius: '14px',
+        position: 'relative',
+        // touchAction removido para permitir interação em mobile
+      };
+      
+      // Adicionar width e height se fornecidos
+      if (width !== undefined) {
+        mobileStyles.width = typeof width === 'number' ? `${width}px` : width;
+      }
+      if (height !== undefined) {
+        mobileStyles.height = typeof height === 'number' ? `${height}px` : height;
+      }
+      
+      return mobileStyles;
+    }
+    
+    // Versão completa com efeitos RGB para desktop
     const baseStyles: React.CSSProperties = {
       '--base': base,
       '--spread': spread,
@@ -90,7 +117,7 @@ const GlowCard: React.FC<GlowCardProps> = ({
       touchAction: 'none',
     };
 
-    // Add width and height if provided
+    // Adicionar width e height se fornecidos
     if (width !== undefined) {
       baseStyles.width = typeof width === 'number' ? `${width}px` : width;
     }
@@ -157,6 +184,31 @@ const GlowCard: React.FC<GlowCardProps> = ({
     }
   `;
 
+  // Versão simplificada para mobile
+  if (isMobile) {
+    return (
+      <div
+        ref={cardRef}
+        style={getInlineStyles()}
+        className={`
+          ${getSizeClasses()}
+          ${!customSize ? 'aspect-[3/4]' : ''}
+          rounded-2xl 
+          relative 
+          grid 
+          grid-rows-[auto_1fr] 
+          shadow-[0_1rem_2rem_-1rem_black] 
+          backdrop-blur-[5px]
+          overflow-hidden
+          ${className}
+        `}
+      >
+        {children}
+      </div>
+    );
+  }
+
+  // Versão completa com efeitos RGB para desktop
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: beforeAfterStyles }} />
